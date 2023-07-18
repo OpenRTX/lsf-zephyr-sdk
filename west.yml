@@ -1,0 +1,53 @@
+# Copyright (c) 2023 LISTENAI
+# SPDX-License-Identifier: Apache-2.0
+
+manifest:
+  remotes:
+    - name: zephyr
+      url-base: https://cloud.listenai.com/zephyr
+    - name: listenai
+      url-base: https://cloud.listenai.com/listenai
+
+  projects:
+    - name: zephyr
+      remote: zephyr
+      revision: master
+      clone-depth: 1
+      path: zephyr
+      import:
+        file: listenai/manifest.yml
+        name-blocklist:
+          - libmetal
+          - sof
+          - protobuf-c
+          - esp-hosted
+          - mcuboot
+          - avf
+          - licak
+          - lisa_player
+          - zport_sal
+          - zport_esp
+          - wifi_manager
+          - xr819s
+          - lvgl
+          - csk_sqlite3
+    - name: freertos_shims
+      remote: listenai
+      revision: v0.1.0
+      path: modules/lib/freertos_shims
+      repo-path: modules/freertos_shims
+    - name: urpc
+      remote: listenai
+      revision: v0.2.0
+      path: modules/lib/urpc
+      repo-path: modules/urpc
+    - name: lsf
+      remote: listenai
+      revision: v0.3.0-beta.1
+      path: modules/lib/lsf
+      repo-path: modules/lsf
+    - name: af
+      remote: listenai
+      revision: v0.3.0-beta.1
+      path: modules/lib/af
+      repo-path: modules/af

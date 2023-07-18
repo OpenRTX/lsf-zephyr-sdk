@@ -1,0 +1,8 @@
+# Copyright (c) 2023 LISTENAI
+# SPDX-License-Identifier: Apache-2.0
+
+mainmenu "LSF Zephyr SDK"
+
+module = LSF
+module-str = lsf
+source "subsys/logging/Kconfig.template.log_config"
