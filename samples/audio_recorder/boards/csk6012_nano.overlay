@@ -1,0 +1,53 @@
+/*
+ * Copyright(c) 2023 LISTENAI
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <mem.h>
+#include <lsf/lsf.dtsi>
+
+/delete-node/ &psram_ap;
+/delete-node/ &psram_cp;
+/delete-node/ &psram_share;
+
+/ {
+	chosen {
+		lsf,dsp-firmware = &dsp_firmware;
+	};
+};
+
+&sram0 {
+	reg = <0x80000 DT_SIZE_K(256)>;
+};
+
+&flash0 {
+	partitions {
+		dsp_firmware: partition@100000 {
+			label = "dsp_firmware";
+			reg = <0x100000 DT_SIZE_M(1)>;
+		};
+	};
+};
+
+&psram0 {
+	psram_cp: psram_cp@30000000 {
+		compatible = "listenai,csk6-psram-partition";
+		reg = <0x30000000 DT_SIZE_M(4)>;
+		status = "okay";
+	};
+
+	psram_ap: psram_ap@30100000 {
+		compatible = "zephyr,memory-region";
+		reg = <0x30400000 DT_SIZE_M(4)>;
+		status = "okay";
+		zephyr,memory-region = "PSRAMAP";
+	};
+};
+
+&lsf {
+	status = "okay";
+};
+
+&lsf_audio {
+	status = "okay";
+};
