@@ -22,5 +22,11 @@
 			reg = <1>;
 			status = "disabled";
 		};
+
+		lsf_wasm: wasm-service@2 {
+			compatible = "lsf,wasm-service";
+			reg = <2>;
+			status = "disabled";
+		};
 	};
 };

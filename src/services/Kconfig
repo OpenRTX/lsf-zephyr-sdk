@@ -15,4 +15,10 @@ config LSF_THINKER_SERVICE
 	bool "LSF Thinker Service"
 	default $(dt_compat_enabled,$(DT_COMPAT_LSF_THINKER_SERVICE))
 
+DT_COMPAT_LSF_WASM_SERVICE := lsf,wasm-service
+
+config LSF_WASM_SERVICE
+	bool "LSF WASM Service"
+	default $(dt_compat_enabled,$(DT_COMPAT_LSF_WASM_SERVICE))
+
 endmenu
