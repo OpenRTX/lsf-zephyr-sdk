@@ -12,3 +12,4 @@ endif()
 
 zephyr_library_sources_ifdef(CONFIG_LSF_THINKER_SERVICE service_thinker.c)
 zephyr_library_sources_ifdef(CONFIG_LSF_WASM_SERVICE service_wasm.c)
+zephyr_library_sources_ifdef(CONFIG_LSF_VAD_SERVICE service_vad.c)
