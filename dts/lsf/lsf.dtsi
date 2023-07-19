@@ -10,5 +10,11 @@
 		#size-cells = <0>;
 		label = "LSF";
 		status = "disabled";
+
+		lsf_audio: audio-service@0 {
+			compatible = "lsf,audio-service";
+			reg = <0>;
+			status = "disabled";
+		};
 	};
 };
