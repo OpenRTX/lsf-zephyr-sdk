@@ -1,0 +1,14 @@
+/*
+ * Copyright(c) 2023 LISTENAI
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/ {
+	lsf: service-controller {
+		compatible = "lsf,service-controller";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		label = "LSF";
+		status = "disabled";
+	};
+};

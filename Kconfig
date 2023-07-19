@@ -8,3 +8,4 @@ module-str = lsf
 source "subsys/logging/Kconfig.template.log_config"
 
 rsource "Kconfig.dsp"
+rsource "Kconfig.lsf"
