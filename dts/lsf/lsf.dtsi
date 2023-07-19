@@ -16,5 +16,11 @@
 			reg = <0>;
 			status = "disabled";
 		};
+
+		lsf_thinker: thinker-service@1 {
+			compatible = "lsf,thinker-service";
+			reg = <1>;
+			status = "disabled";
+		};
 	};
 };

@@ -9,3 +9,5 @@ if(CONFIG_LSF_AUDIO_SERVICE)
 zephyr_include_directories(${ZEPHYR_LSF_MODULE_DIR}/lsf_client/include)
 zephyr_include_directories(${ZEPHYR_AF_MODULE_DIR})
 endif()
+
+zephyr_library_sources_ifdef(CONFIG_LSF_THINKER_SERVICE service_thinker.c)

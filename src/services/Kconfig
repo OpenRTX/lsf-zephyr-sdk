@@ -9,4 +9,10 @@ config LSF_AUDIO_SERVICE
 	bool "LSF Audio Service"
 	default $(dt_compat_enabled,$(DT_COMPAT_LSF_AUDIO_SERVICE))
 
+DT_COMPAT_LSF_THINKER_SERVICE := lsf,thinker-service
+
+config LSF_THINKER_SERVICE
+	bool "LSF Thinker Service"
+	default $(dt_compat_enabled,$(DT_COMPAT_LSF_THINKER_SERVICE))
+
 endmenu
