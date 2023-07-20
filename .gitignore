@@ -2,3 +2,4 @@
 .vscode
 .sdk
 /build
+/twister-out*
