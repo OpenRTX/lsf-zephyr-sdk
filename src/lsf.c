@@ -14,9 +14,15 @@ LOG_MODULE_REGISTER(lsf, CONFIG_LSF_LOG_LEVEL);
 #include <ic_proxy.h>
 #include <ic_fence.h>
 
-static int service_controller_init(const struct device *dev)
+#include <lsf/controller.h>
+
+static volatile bool inited = false;
+
+void lsf_controller_init(void)
 {
-	ARG_UNUSED(dev);
+	if (inited) {
+		return;
+	}
 
 	LOG_DBG("Initializing LSF service controller");
 
@@ -34,8 +40,19 @@ static int service_controller_init(const struct device *dev)
 	ICFence_wait(fence, &val);
 	LOG_DBG("DSP ready");
 
+	inited = true;
+}
+
+static int lsf_controller_init_internal(const struct device *dev)
+{
+	ARG_UNUSED(dev);
+
+#if DT_HAS_CHOSEN(lsf_dsp_firmware)
+	lsf_controller_init();
+#endif /* DT_HAS_CHOSEN(lsf_dsp_firmware) */
+
 	return 0;
 }
 
-DEVICE_DT_INST_DEFINE(0, service_controller_init, NULL, NULL, NULL, APPLICATION,
+DEVICE_DT_INST_DEFINE(0, lsf_controller_init_internal, NULL, NULL, NULL, APPLICATION,
 		      CONFIG_APPLICATION_INIT_PRIORITY, NULL);
