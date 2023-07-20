@@ -34,7 +34,7 @@ static LsfPropertyConfig wasmservice_property_defs[] = {
 	},
 };
 
-int lsf_wasm_load_app(void *ptr, uint32_t size)
+int lsf_wasm_load_app(const void *ptr, uint32_t size)
 {
 	LsfVariant var;
 	int ret;

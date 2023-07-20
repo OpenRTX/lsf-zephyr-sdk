@@ -8,6 +8,6 @@
 
 #include <stdint.h>
 
-int lsf_wasm_load_app(void *ptr, uint32_t size);
+int lsf_wasm_load_app(const void *ptr, uint32_t size);
 
 #endif /* __LSF_SERVICES_WASM_H__ */
