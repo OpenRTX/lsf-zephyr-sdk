@@ -39,6 +39,9 @@ void lsf_dsp_load(const void *addr, uint32_t size)
 	/* Set boot address */
 	__HAL_SYS_CP_SET_BOOT_ADDR(CP_PSRAM_BASE);
 
+	/* Stall DSP */
+	__HAL_SYS_CP_STALL();
+
 	if (__HAL_SYS_IS_CP_RESET()) {
 		__HAL_SYS_CP_RELEASE();
 	}
