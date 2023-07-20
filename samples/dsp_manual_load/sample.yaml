@@ -1,0 +1,5 @@
+sample:
+  name: dsp_manual_load
+tests:
+  sample.dsp_manual_load:
+    tags: wasm

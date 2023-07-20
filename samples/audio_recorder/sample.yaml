@@ -1,0 +1,5 @@
+sample:
+  name: audio_recorder
+tests:
+  sample.audio_recorder:
+    tags: audio
