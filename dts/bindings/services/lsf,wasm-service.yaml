@@ -6,11 +6,3 @@ description: LSF WASM Service
 include: lsf-service.yaml
 
 compatible: "lsf,wasm-service"
-
-properties:
-  wasm-app-partition:
-    type: phandle
-    description: |
-      The phandle to the WASM app partition. If specified, the WASM app will be
-      automatically loaded when the service is started.
-    required: false

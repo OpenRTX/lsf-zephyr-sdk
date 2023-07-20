@@ -18,9 +18,9 @@ LOG_MODULE_REGISTER(lsf_wasm, CONFIG_LSF_LOG_LEVEL);
 
 #define Z_FLASH_BASE DT_REG_ADDR(DT_CHOSEN(zephyr_flash))
 
-#if DT_INST_NODE_HAS_PROP(0, wasm_app_partition)
-#define WASM_APP_NODE DT_INST_PHANDLE(0, wasm_app_partition)
-#endif /* DT_INST_NODE_HAS_PROP(0, wasm_app_partition) */
+#if defined(CONFIG_LSF_WASM_SERVICE_LOAD_APP_ON_BOOT)
+#define WASM_APP_NODE DT_CHOSEN(lsf_dsp_wasm_app)
+#endif /* CONFIG_LSF_WASM_SERVICE_LOAD_APP_ON_BOOT */
 
 enum {
 	WASMSERVICE_PROPERTY_APP,
@@ -84,13 +84,13 @@ static int lsf_wasm_init(const struct device *dev)
 	lsf_import_properties(WASM_SERVICE_ID, wasmservice_property_defs,
 			      ARRAY_SIZE(wasmservice_property_defs));
 
-#ifdef WASM_APP_NODE
+#if defined(CONFIG_LSF_WASM_SERVICE_LOAD_APP_ON_BOOT)
 	LOG_DBG("Auto loading WASM app from %s (offset: 0x%08x, size: %u)", DT_LABEL(WASM_APP_NODE),
 		DT_REG_ADDR(WASM_APP_NODE), DT_REG_SIZE(WASM_APP_NODE));
 
 	lsf_wasm_load_app((void *)(Z_FLASH_BASE + DT_REG_ADDR(WASM_APP_NODE)),
 			  DT_REG_SIZE(WASM_APP_NODE));
-#endif /* WASM_APP_NODE */
+#endif /* CONFIG_LSF_WASM_SERVICE_LOAD_APP_ON_BOOT */
 
 	return 0;
 }

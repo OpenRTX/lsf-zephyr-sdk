@@ -21,6 +21,18 @@ config LSF_WASM_SERVICE
 	bool "LSF WASM Service"
 	default $(dt_compat_enabled,$(DT_COMPAT_LSF_WASM_SERVICE))
 
+if LSF_WASM_SERVICE
+
+DT_CHOSEN_LSF_DSP_WASM_APP := lsf,dsp-wasm-app
+
+config LSF_WASM_SERVICE_LOAD_APP_ON_BOOT
+	bool "Load WASM app on boot"
+	default y
+	depends on $(dt_chosen_enabled,$(DT_CHOSEN_LSF_DSP_WASM_APP))
+	depends on LSF_DSP_LOAD_ON_BOOT
+
+endif # LSF_WASM_SERVICE
+
 DT_COMPAT_LSF_VAD_SERVICE := lsf,vad-service
 
 config LSF_VAD_SERVICE
