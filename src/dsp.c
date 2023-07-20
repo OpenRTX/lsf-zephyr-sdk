@@ -27,9 +27,9 @@ LOG_MODULE_REGISTER(dsp, CONFIG_LSF_LOG_LEVEL);
 
 #define AP_FLASH_BASE DT_REG_ADDR(DT_CHOSEN(zephyr_flash))
 
-#if DT_HAS_CHOSEN(lsf_dsp_firmware)
+#if defined(CONFIG_LSF_DSP_LOAD_ON_BOOT)
 #define DSP_FIRMWARE_NODE DT_CHOSEN(lsf_dsp_firmware)
-#endif /* DT_HAS_CHOSEN(lsf_dsp_firmware) */
+#endif /* CONFIG_LSF_DSP_LOAD_ON_BOOT */
 
 void lsf_dsp_load(const void *addr, uint32_t size)
 {
@@ -84,7 +84,7 @@ static int lsf_dsp_init(const struct device *dev)
 	memset((void *)AP_SYS_RAM_BANK_ADDR, 0x00, AP_SYS_RAM_BANK_SIZE);
 	dcache_invalidate_range(AP_SYS_RAM_BANK_ADDR, AP_SYS_RAM_BANK_ADDR + AP_SYS_RAM_BANK_SIZE);
 
-#ifdef DSP_FIRMWARE_NODE
+#if defined(CONFIG_LSF_DSP_LOAD_ON_BOOT)
 	LOG_DBG("Auto load DSP firmware from %s (offset: 0x%08x, size: %u)",
 		DT_LABEL(DSP_FIRMWARE_NODE), DT_REG_ADDR(DSP_FIRMWARE_NODE),
 		DT_REG_SIZE(DSP_FIRMWARE_NODE));
@@ -92,7 +92,7 @@ static int lsf_dsp_init(const struct device *dev)
 	/* Load DSP firmware */
 	lsf_dsp_load((void *)(AP_FLASH_BASE + DT_REG_ADDR(DSP_FIRMWARE_NODE)),
 		     DT_REG_SIZE(DSP_FIRMWARE_NODE));
-#endif /* DSP_FIRMWARE_NODE */
+#endif /* CONFIG_LSF_DSP_LOAD_ON_BOOT */
 
 	return 0;
 }
