@@ -10,12 +10,12 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(lsf_audio, CONFIG_LSF_LOG_LEVEL);
 
+#include <lsf/service.h>
+
 #include <AudioSystem.h>
 
-static int lsf_audio_init(const struct device *dev)
+static int lsf_audio_init(void)
 {
-	ARG_UNUSED(dev);
-
 	LOG_DBG("Initialize AudioService");
 
 	AudioSystem_initialize();
@@ -23,5 +23,4 @@ static int lsf_audio_init(const struct device *dev)
 	return 0;
 }
 
-DEVICE_DT_INST_DEFINE(0, lsf_audio_init, NULL, NULL, NULL, APPLICATION,
-		      CONFIG_APPLICATION_INIT_PRIORITY, NULL);
+LSF_SERVICE_DEFINE(lsf_audio, lsf_audio_init);

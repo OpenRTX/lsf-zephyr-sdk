@@ -12,6 +12,7 @@
 LOG_MODULE_REGISTER(lsf_wasm, CONFIG_LSF_LOG_LEVEL);
 
 #include <lsf.h>
+#include <lsf/service.h>
 #include <lsf/services/wasm.h>
 
 #define WASM_SERVICE_ID DT_INST_REG_ADDR(0)
@@ -75,10 +76,8 @@ int lsf_wasm_load_app(const void *ptr, uint32_t size)
 	return 0;
 }
 
-static int lsf_wasm_init(const struct device *dev)
+static int lsf_wasm_init(void)
 {
-	ARG_UNUSED(dev);
-
 	LOG_DBG("Initialize WasmService");
 
 	lsf_import_properties(WASM_SERVICE_ID, wasmservice_property_defs,
@@ -95,5 +94,4 @@ static int lsf_wasm_init(const struct device *dev)
 	return 0;
 }
 
-DEVICE_DT_INST_DEFINE(0, lsf_wasm_init, NULL, NULL, NULL, APPLICATION,
-		      CONFIG_APPLICATION_INIT_PRIORITY, NULL);
+LSF_SERVICE_DEFINE(lsf_wasm, lsf_wasm_init);

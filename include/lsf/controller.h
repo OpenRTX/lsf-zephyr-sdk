@@ -6,6 +6,6 @@
 #ifndef __LSF_CONTROLLER_H__
 #define __LSF_CONTROLLER_H__
 
-void lsf_controller_init(void);
+int lsf_controller_init(void);
 
 #endif /* __LSF_CONTROLLER_H__ */
