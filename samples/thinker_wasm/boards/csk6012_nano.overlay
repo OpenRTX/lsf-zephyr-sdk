@@ -8,6 +8,7 @@
 / {
 	chosen {
 		lsf,dsp-firmware = &dsp_firmware;
+		lsf,dsp-wasm-app = &wasm_app;
 	};
 };
 
@@ -36,5 +37,4 @@
 
 &lsf_wasm {
 	status = "okay";
-	wasm-app-partition = <&wasm_app>;
 };
