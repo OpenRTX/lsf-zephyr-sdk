@@ -11,6 +11,7 @@
 LOG_MODULE_REGISTER(lsf_thinker, CONFIG_LSF_LOG_LEVEL);
 
 #include <lsf.h>
+#include <lsf/service.h>
 #include <lsf/services/thinker.h>
 
 #define THINKER_SERVICE_ID DT_INST_REG_ADDR(0)
@@ -108,10 +109,8 @@ int lsf_thinker_get_output(void **ptr, uint32_t *size)
 	return 0;
 }
 
-static int lsf_thinker_init(const struct device *dev)
+static int lsf_thinker_init(void)
 {
-	ARG_UNUSED(dev);
-
 	LOG_DBG("Initialize ThinkerService");
 
 	lsf_import_properties(THINKER_SERVICE_ID, thinkerservice_property_defs,
@@ -120,5 +119,4 @@ static int lsf_thinker_init(const struct device *dev)
 	return 0;
 }
 
-DEVICE_DT_INST_DEFINE(0, lsf_thinker_init, NULL, NULL, NULL, APPLICATION,
-		      CONFIG_APPLICATION_INIT_PRIORITY, NULL);
+LSF_SERVICE_DEFINE(lsf_thinker, lsf_thinker_init);

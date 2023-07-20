@@ -11,6 +11,7 @@
 LOG_MODULE_REGISTER(lsf_vad, CONFIG_LSF_LOG_LEVEL);
 
 #include <lsf.h>
+#include <lsf/service.h>
 #include <lsf/services/vad.h>
 
 #define VAD_SERVICE_ID DT_INST_REG_ADDR(0)
@@ -63,10 +64,8 @@ int lsf_vad_enable(void)
 	return 0;
 }
 
-static int lsf_vad_init(const struct device *dev)
+static int lsf_vad_init(void)
 {
-	ARG_UNUSED(dev);
-
 	LsfVariant var;
 	int ret;
 
@@ -99,5 +98,4 @@ static int lsf_vad_init(const struct device *dev)
 	return 0;
 }
 
-DEVICE_DT_INST_DEFINE(0, lsf_vad_init, NULL, NULL, NULL, APPLICATION,
-		      CONFIG_APPLICATION_INIT_PRIORITY, NULL);
+LSF_SERVICE_DEFINE(lsf_vad, lsf_vad_init);
