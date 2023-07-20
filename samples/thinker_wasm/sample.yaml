@@ -1,0 +1,5 @@
+sample:
+  name: thinker_wasm
+tests:
+  sample.thinker_wasm:
+    tags: thinker wasm
