@@ -3,13 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#include <mem.h>
+
 / {
 	lsf: service-controller {
 		compatible = "lsf,service-controller";
 		#address-cells = <1>;
 		#size-cells = <0>;
 		label = "LSF";
-		status = "disabled";
 
 		lsf_audio: audio-service@0 {
 			compatible = "lsf,audio-service";
@@ -34,5 +35,28 @@
 			reg = <3>;
 			status = "disabled";
 		};
+	};
+};
+
+/delete-node/ &psram_ap;
+/delete-node/ &psram_cp;
+/delete-node/ &psram_share;
+
+&sram0 {
+	reg = <0x80000 DT_SIZE_K(256)>;
+};
+
+&psram0 {
+	psram_cp: psram_cp@30000000 {
+		compatible = "listenai,csk6-psram-partition";
+		reg = <0x30000000 DT_SIZE_M(4)>;
+		status = "okay";
+	};
+
+	psram_ap: psram_ap@30100000 {
+		compatible = "zephyr,memory-region";
+		reg = <0x30400000 DT_SIZE_M(4)>;
+		status = "okay";
+		zephyr,memory-region = "PSRAMAP";
 	};
 };
