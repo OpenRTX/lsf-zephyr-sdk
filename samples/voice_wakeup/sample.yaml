@@ -1,0 +1,5 @@
+sample:
+  name: voice_wakeup
+tests:
+  sample.voice_wakeup:
+    tags: audio vad
