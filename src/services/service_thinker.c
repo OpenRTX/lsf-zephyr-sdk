@@ -39,7 +39,7 @@ static LsfPropertyConfig thinkerservice_property_defs[] = {
 	},
 };
 
-int lsf_thinker_set_model(void *ptr, uint32_t size)
+int lsf_thinker_set_model(const void *ptr, uint32_t size)
 {
 	LsfVariant var;
 	int ret;
@@ -49,7 +49,7 @@ int lsf_thinker_set_model(void *ptr, uint32_t size)
 
 	LsfVariant_init(&var);
 	var.variant_type = type_pointer;
-	var.u.pointer.pAddr = ptr;
+	var.u.pointer.pAddr = (void *)ptr;
 	var.u.pointer.size = size;
 
 	ret = lsf_set(THINKER_SERVICE_ID, THINKERSERVICE_PROPERTY_MODEL, &var);
@@ -63,7 +63,7 @@ int lsf_thinker_set_model(void *ptr, uint32_t size)
 	return 0;
 }
 
-int lsf_thinker_set_input(void *ptr, uint32_t size)
+int lsf_thinker_set_input(const void *ptr, uint32_t size)
 {
 	LsfVariant var;
 	int ret;
@@ -73,7 +73,7 @@ int lsf_thinker_set_input(void *ptr, uint32_t size)
 
 	LsfVariant_init(&var);
 	var.variant_type = type_pointer;
-	var.u.pointer.pAddr = ptr;
+	var.u.pointer.pAddr = (void *)ptr;
 	var.u.pointer.size = size;
 
 	ret = lsf_set(THINKER_SERVICE_ID, THINKERSERVICE_PROPERTY_INPUT, &var);

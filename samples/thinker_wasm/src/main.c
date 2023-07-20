@@ -40,7 +40,7 @@ void main(void)
 	printk("Hello World! %s\n", CONFIG_BOARD);
 
 	/* 加载 Thinker 模型，注意传入模型的实际字节数 */
-	lsf_thinker_set_model((void *)THINKER_MODEL_ADDR, 2932400);
+	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932400);
 	printk("Model loaded\n");
 
 	int8_t *output;
@@ -55,7 +55,7 @@ void main(void)
 		printk("========== LOOP %d ==========\n", i);
 
 		printk("setInput, size: %d\n", input_resource_len);
-		lsf_thinker_set_input((void *)input_resource, input_resource_len);
+		lsf_thinker_set_input(input_resource, input_resource_len);
 
 		lsf_thinker_get_output((void **)&output, &output_size);
 		printk("getOutput, size: %d\n", output_size);

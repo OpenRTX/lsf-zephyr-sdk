@@ -8,9 +8,9 @@
 
 #include <stdint.h>
 
-int lsf_thinker_set_model(void *ptr, uint32_t size);
+int lsf_thinker_set_model(const void *ptr, uint32_t size);
 
-int lsf_thinker_set_input(void *ptr, uint32_t size);
+int lsf_thinker_set_input(const void *ptr, uint32_t size);
 
 int lsf_thinker_get_output(void **ptr, uint32_t *size);
 
