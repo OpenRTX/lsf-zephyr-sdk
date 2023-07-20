@@ -1,0 +1,20 @@
+variables:
+  GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_PROJECT_PATH/$CI_CONCURRENT_ID/workspace
+
+stages:
+  - build
+
+before_script:
+  - set -e -o pipefail
+  - export PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
+
+build:
+  stage: build
+  tags: [ docker ]
+  image: registry.cn-hangzhou.aliyuncs.com/xingrz/env-zephyr:arm-zephyr-eabi
+  script: |
+    west init -l .
+    west update
+    west zephyr-export
+    pip3 install -U -r ../zephyr/scripts/requirements.txt
+    west build -b csk6012_nano -p -s samples/audio_recorder
