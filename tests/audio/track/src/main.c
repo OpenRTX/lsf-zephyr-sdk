@@ -150,7 +150,7 @@ static void test_stop_non_offload_audio_track()
 
 void test_main(void)
 {
-	ztest_test_suite(audio_recorder_test, 
+	ztest_test_suite(audio_track_test, 
 					ztest_unit_test(test_create_mono_audio_track),
 					ztest_unit_test(test_create_stereo_audio_track),
 					ztest_unit_test(test_unsupport_channel_audio_track),
@@ -159,5 +159,5 @@ void test_main(void)
 					ztest_unit_test(test_create_8bit_pcm_audio_track),
 					ztest_unit_test(test_play_non_offload_audio_track),
 					ztest_unit_test(test_stop_non_offload_audio_track));
-	ztest_run_test_suite(audio_recorder_test);
+	ztest_run_test_suite(audio_track_test);
 }
