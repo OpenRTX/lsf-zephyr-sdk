@@ -1,0 +1,25 @@
+/*
+ * Copyright(c) 2023 LISTENAI
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <lsf/lsf.dtsi>
+
+/ {
+	chosen {
+		lsf,dsp-firmware = &dsp_firmware;
+	};
+};
+
+&flash0 {
+	partitions {
+		dsp_firmware: partition@100000 {
+			label = "dsp_firmware";
+			reg = <0x100000 DT_SIZE_M(1)>;
+		};
+	};
+};
+
+&lsf_audio {
+	status = "okay";
+};

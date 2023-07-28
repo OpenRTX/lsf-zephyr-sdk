@@ -1,0 +1,6 @@
+common:
+  tags: audio track
+tests:
+  audio.track:
+    integration_platforms:
+      - csk6012_nano
