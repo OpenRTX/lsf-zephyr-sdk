@@ -63,9 +63,6 @@ void main(void)
 	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, 0);
 	assert(0 == ret);
 
-	AudioRecord_start(record);
-	AudioTrack_start(track);
-
 	ret = gpio_pin_interrupt_configure_dt(&btn, GPIO_INT_EDGE_TO_ACTIVE);
 	assert(0 == ret);
 
@@ -81,15 +78,19 @@ void main(void)
 		gpio_pin_set_dt(&led, 1);
 
 		printk("Records 5 seconds...\n");
+		AudioRecord_start(record);
 		ret = AudioRecord_read(record, recording,
 				       sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 		assert(ret == 0);
+		AudioRecord_stop(record);
 
 		gpio_pin_set_dt(&led, 0);
 
 		printk("Plays 5 seconds...\n");
+		AudioTrack_start(track);
 		ret = AudioTrack_write(track, recording,
 				       sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 		assert(ret == 0);
+		AudioTrack_stop(track);
 	}
 }
