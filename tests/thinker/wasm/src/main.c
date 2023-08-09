@@ -96,11 +96,11 @@ static void test_record_and_track_thinker()
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
-	AudioTrack_start(track);
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 
+	AudioTrack_start(track);
 	ret = AudioTrack_write(track, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 	zassert_equal(ret, NO_ERROR, "Failed to write audio track");
@@ -210,11 +210,11 @@ static void test_record_and_track_thinker_100_times()
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
-	AudioTrack_start(track);
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 
+	AudioTrack_start(track);
 	ret = AudioTrack_write(track, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 	zassert_equal(ret, NO_ERROR, "Failed to write audio track");

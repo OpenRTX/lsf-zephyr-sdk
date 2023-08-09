@@ -17,6 +17,11 @@
 			label = "dsp_firmware";
 			reg = <0x100000 DT_SIZE_M(1)>;
 		};
+
+		test_audio: partition@200000 {
+			label = "test_audio";
+			reg = <0x200000 453350>;
+		};
 	};
 };
 
