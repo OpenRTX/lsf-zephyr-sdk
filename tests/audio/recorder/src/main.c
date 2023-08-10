@@ -25,7 +25,7 @@ static void test_16bit_pcm_audio_recorder()
 	int ret;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioRecord object");
 
 	ret = AudioRecord_dtor(record);
@@ -38,7 +38,7 @@ static void test_channel_left_audio_recorder()
 	int ret;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioRecord object");
 
 	ret = AudioRecord_dtor(record);
@@ -51,7 +51,7 @@ static void test_channel_right_audio_recorder()
 	int ret;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_RIGHT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_RIGHT, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioRecord object");
 
 	ret = AudioRecord_dtor(record);
@@ -64,7 +64,7 @@ static void test_channel_stereo_audio_recorder()
 	int ret;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_STEREO, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_STEREO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioRecord object");
 
 	ret = AudioRecord_dtor(record);
@@ -77,7 +77,7 @@ static void test_0_sample_rate_audio_recorder()
 	int ret;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, 0, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, 0, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 	zassert_equal(ret, BAD_VALUE, "Failed to create AudioRecord object");
 
 }
@@ -97,7 +97,7 @@ static void test_audio_recorder(void)
 	int ret;
 	AudioRecord *record = &s_record_obj;
 
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioRecord object");
 
 	AudioRecord_start(record);
@@ -112,14 +112,14 @@ static void test_read_0_audio_recorder(void)
 	int ret;
 	AudioRecord *record = &s_record_obj;
 
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioRecord object");
 
 	AudioRecord_start(record);
 
 	ret = AudioRecord_read(record, recording,
 			       0);
-	zassert_equal(ret, 0, "Failed to read AudioRecord");
+	zassert_equal(ret, 160*sizeof(int16_t), "Failed to read AudioRecord");
 }
 
 void test_main(void)

@@ -32,7 +32,7 @@ static void test_create_mono_audio_track()
 	int ret;
 	AudioTrack *track = &s_track_obj;
 	
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	ret = AudioTrack_dtor(track);
@@ -45,7 +45,7 @@ static void test_create_stereo_audio_track()
 	int ret;
 	AudioTrack *track = &s_track_obj;
 	
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_STEREO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_STEREO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	ret = AudioTrack_dtor(track);
@@ -58,7 +58,7 @@ static void test_unsupport_channel_audio_track()
 	int ret;
 	AudioTrack *track = &s_track_obj;
 	
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, 0, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, 0, 160, NULL);
 	zassert_equal(ret, BAD_VALUE, "Failed to create AudioTrack object");
 
 }
@@ -68,7 +68,7 @@ static void test_0_sample_rate_audio_track()
 	int ret;
 	AudioTrack *track = &s_track_obj;
 	
-	ret = AudioTrack_ctor(track, 0, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, 0, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, BAD_VALUE, "Failed to create AudioTrack object");
 
 }
@@ -78,7 +78,7 @@ static void test_create_16bit_pcm_audio_track()
 	int ret;
 	AudioTrack *track = &s_track_obj;
 	
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	ret = AudioTrack_dtor(track);
@@ -92,9 +92,9 @@ static void test_play_non_offload_audio_track()
 	AudioTrack *track = &s_track_obj;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
@@ -119,9 +119,9 @@ static void test_stop_non_offload_audio_track()
 	AudioTrack *track = &s_track_obj;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
@@ -147,9 +147,9 @@ static void test_pause_audio_track()
 	AudioTrack *track = &s_track_obj;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
@@ -176,9 +176,9 @@ static void test_resume_audio_track()
 	AudioTrack *track = &s_track_obj;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
@@ -208,9 +208,9 @@ static void test_double_start_audio_track()
 	AudioTrack *track = &s_track_obj;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
@@ -234,9 +234,9 @@ static void test_set_max_volume_audio_track()
 	AudioTrack *track = &s_track_obj;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
@@ -262,9 +262,9 @@ static void test_set_min_volume_audio_track()
 	AudioTrack *track = &s_track_obj;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
@@ -290,9 +290,9 @@ static void test_set_average_volume_audio_track()
 	AudioTrack *track = &s_track_obj;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
