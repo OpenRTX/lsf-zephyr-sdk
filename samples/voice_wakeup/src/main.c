@@ -36,7 +36,7 @@ void main(void)
 
 	/* 初始化音频组件 */
 	AudioRecord *record = &s_record_obj;
-	AudioRecord_ctor(record, 0, 16000, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	AudioRecord_ctor(record, 0, 16000, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
 	printk("Going to sleep after 3 seconds...\n");
 	k_sleep(K_SECONDS(3));
