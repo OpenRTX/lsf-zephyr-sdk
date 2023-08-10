@@ -48,6 +48,6 @@ manifest:
       repo-path: modules/lsf
     - name: af
       remote: listenai
-      revision: v1.0.0-beta.1
+      revision: v1.0.0-beta.2
       path: modules/lib/af
       repo-path: modules/af

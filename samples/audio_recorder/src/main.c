@@ -56,11 +56,11 @@ void main(void)
 
 	/* 初始化音频组件 */
 	AudioRecord *record = &s_record_obj;
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 	assert(0 == ret);
 
 	AudioTrack *track = &s_track_obj;
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, 0);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, 0);
 	assert(0 == ret);
 
 	ret = gpio_pin_interrupt_configure_dt(&btn, GPIO_INT_EDGE_TO_ACTIVE);
@@ -71,6 +71,7 @@ void main(void)
 
 	printk("Press the button\n");
 
+	ssize_t size;
 	while (1) {
 		/* 循环等待按键按下 */
 		k_sem_take(&s_sem_record, K_FOREVER);
@@ -78,18 +79,19 @@ void main(void)
 		gpio_pin_set_dt(&led, 1);
 
 		printk("Records 5 seconds...\n");
+
 		AudioRecord_start(record);
-		ret = AudioRecord_read(record, recording,
-				       sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
-		assert(ret == 0);
+		size = AudioRecord_read(record, recording,
+					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 		AudioRecord_stop(record);
+		assert(size > 0);
 
 		gpio_pin_set_dt(&led, 0);
 
 		printk("Plays 5 seconds...\n");
+
 		AudioTrack_start(track);
-		ret = AudioTrack_write(track, recording,
-				       sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+		ret = AudioTrack_write(track, recording, size);
 		assert(ret == 0);
 		AudioTrack_stop(track);
 	}

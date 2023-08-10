@@ -53,7 +53,7 @@ void main(void)
 
 	/* 初始化音频组件 */
 	AudioTrack *track = &s_track_obj;
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, 0);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, 0);
 	assert(0 == ret);
 
 	ret = gpio_pin_interrupt_configure_dt(&btn, GPIO_INT_EDGE_TO_ACTIVE);
