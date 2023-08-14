@@ -1,0 +1,6 @@
+common:
+  tags: thinker wasm
+tests:
+  thinker.wasm:
+    integration_platforms:
+      - csk6012_nano
