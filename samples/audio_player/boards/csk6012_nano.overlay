@@ -9,6 +9,10 @@
 	chosen {
 		lsf,dsp-firmware = &dsp_firmware;
 	};
+
+	aliases {
+		analogkey = &keysense;
+	};
 };
 
 &flash0 {
@@ -23,6 +27,26 @@
 			reg = <0x200000 160000>;
 		};
 	};
+};
+
+&pinctrl {
+	keysense_default: keysense_default {
+		pinctrls = <AON_KEY_GPIOB_05>;
+	};
+};
+
+&keysense {
+	status = "okay";
+	pinctrl-0 = <&keysense_default>;
+	pinctrl-names = "default";
+	io-channels = <&adc0 6>;
+	analogkey-trigger = <
+		 628 /* K4 */
+		 739 /* K3 */
+		 851 /* K2 */
+		1097 /* K1 */
+		3250 /* SW2 */
+	>;
 };
 
 &lsf_audio {
