@@ -1,0 +1,6 @@
+common:
+  tags: audio recorder
+tests:
+  audio.recorder:
+    integration_platforms:
+      - csk6012_nano
