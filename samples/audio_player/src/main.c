@@ -39,6 +39,7 @@ static void button_pressed(const struct device *dev, struct gpio_callback *cb, u
 void main(void)
 {
 	int ret;
+	ssize_t wrote;
 
 	printk("Hello World! %s\n", CONFIG_BOARD);
 
@@ -72,8 +73,8 @@ void main(void)
 
 		AudioTrack_start(track);
 
-		ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
-		assert(ret == 0);
+		wrote = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
+		assert(wrote == TEST_AUDIO_SIZE);
 
 		AudioTrack_stop(track);
 

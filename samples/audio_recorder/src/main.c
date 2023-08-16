@@ -91,8 +91,8 @@ void main(void)
 		printk("Plays 5 seconds...\n");
 
 		AudioTrack_start(track);
-		ret = AudioTrack_write(track, recording, size);
-		assert(ret == 0);
+		size = AudioTrack_write(track, recording, size);
+		assert(size > 0);
 		AudioTrack_stop(track);
 	}
 }
