@@ -43,11 +43,11 @@ manifest:
       repo-path: modules/urpc
     - name: lsf
       remote: listenai
-      revision: v1.0.0
+      revision: v1.0.1-beta.1
       path: modules/lib/lsf
       repo-path: modules/lsf
     - name: af
       remote: listenai
-      revision: v1.0.0
+      revision: v1.0.1-beta.1
       path: modules/lib/af
       repo-path: modules/af
