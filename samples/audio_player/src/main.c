@@ -10,6 +10,7 @@
 #include <zephyr/storage/flash_map.h>
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/kscan.h>
+#include <zephyr/sys/util.h>
 
 #include "AudioSystem.h"
 #include "AudioTrack.h"
@@ -48,6 +49,30 @@ static void kscan_callback(const struct device *dev, uint32_t row, uint32_t colu
 	case KEY_SW2:
 		k_sem_give(&s_sem_start);
 		break;
+	case KEY_K1:
+		AudioTrack_stop(&s_track_obj);
+		break;
+	case KEY_K2: {
+		bool muted = AudioTrack_muted(&s_track_obj);
+		AudioTrack_mute(&s_track_obj, !muted);
+		printk("Muted: %d\n", !muted);
+	} break;
+	case KEY_K3: {
+		float left, right;
+		AudioTrack_getVolume(&s_track_obj, &left, &right);
+		left = MAX(0.0f, left - 0.1f);
+		right = MAX(0.0f, right - 0.1f);
+		AudioTrack_setVolume(&s_track_obj, left, right);
+		printk("Volume: %.2f %.2f\n", left, right);
+	} break;
+	case KEY_K4: {
+		float left, right;
+		AudioTrack_getVolume(&s_track_obj, &left, &right);
+		left = MIN(1.0f, left + 0.1f);
+		right = MIN(1.0f, right + 0.1f);
+		AudioTrack_setVolume(&s_track_obj, left, right);
+		printk("Volume: %.2f %.2f\n", left, right);
+	} break;
 	}
 }
 
@@ -72,7 +97,8 @@ void main(void)
 	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, 0);
 	assert(0 == ret);
 
-	printk("Press the button\n");
+	printk("SW2=PLAY, K1=STOP, K2=MUTE/UNMUTE, K3=VOL-, K4=VOL+\n");
+	printk("Press SW2 to play\n");
 
 	while (1) {
 		/* 循环等待按键按下 */
@@ -83,7 +109,7 @@ void main(void)
 		AudioTrack_start(track);
 
 		wrote = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
-		assert(wrote == TEST_AUDIO_SIZE);
+		printk("Actual wrote %d of %d bytes\n", wrote, TEST_AUDIO_SIZE);
 
 		AudioTrack_stop(track);
 
