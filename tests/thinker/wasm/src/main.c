@@ -90,9 +90,9 @@ static void test_record_and_track_thinker()
 	AudioTrack *track = &s_track_obj;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
@@ -103,7 +103,7 @@ static void test_record_and_track_thinker()
 	AudioTrack_start(track);
 	ret = AudioTrack_write(track, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
-	zassert_equal(ret, NO_ERROR, "Failed to write audio track");
+	zassert_equal(ret, sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT, "Failed to write audio track");
 
 	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932400);
 	printk("Model loaded\n");
@@ -204,9 +204,9 @@ static void test_record_and_track_thinker_100_times()
 	AudioTrack *track = &s_track_obj;
 	AudioRecord *record = &s_record_obj;
 	
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 320, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 320, NULL);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
@@ -217,7 +217,7 @@ static void test_record_and_track_thinker_100_times()
 	AudioTrack_start(track);
 	ret = AudioTrack_write(track, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
-	zassert_equal(ret, NO_ERROR, "Failed to write audio track");
+	zassert_equal(ret, sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT, "Failed to write audio track");
 
 	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932400);
 	printk("Model loaded\n");
