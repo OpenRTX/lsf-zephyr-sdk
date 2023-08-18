@@ -33,7 +33,7 @@ manifest:
           - csk_sqlite3
     - name: freertos_shims
       remote: listenai
-      revision: v0.1.0
+      revision: v0.2.0
       path: modules/lib/freertos_shims
       repo-path: modules/freertos_shims
     - name: urpc
@@ -48,6 +48,6 @@ manifest:
       repo-path: modules/lsf
     - name: af
       remote: listenai
-      revision: v1.0.1-beta.2
+      revision: v1.0.1-beta.3
       path: modules/lib/af
       repo-path: modules/af
