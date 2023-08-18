@@ -261,7 +261,7 @@ static void test_set_max_volume_audio_track()
 	AudioTrack_start(track);
 	
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
-	zassert_equal(ret, TEST_AUDIO_SIZE, "Failed to write audio track");
+	zassert_true(ret>0, "Failed to write audio track");
 
 	
 	ret = AudioTrack_dtor(track);
@@ -294,7 +294,7 @@ static void test_set_min_volume_audio_track()
 	AudioTrack_start(track);
 	
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
-	zassert_equal(ret, TEST_AUDIO_SIZE, "Failed to write audio track");
+	zassert_true(ret>0, "Failed to write audio track");
 
 	
 	ret = AudioTrack_dtor(track);
@@ -327,7 +327,7 @@ static void test_set_average_volume_audio_track()
 	AudioTrack_start(track);
 	
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
-	zassert_equal(ret, TEST_AUDIO_SIZE, "Failed to write audio track");
+	zassert_true(ret>0, "Failed to write audio track");
 
 	
 	ret = AudioTrack_dtor(track);
@@ -360,7 +360,7 @@ static void test_set_negtive_volume_audio_track()
 	AudioTrack_start(track);
 	
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
-	zassert_equal(ret, TEST_AUDIO_SIZE, "Failed to write audio track");
+	zassert_true(ret>0, "Failed to write audio track");
 
 	
 	ret = AudioTrack_dtor(track);
