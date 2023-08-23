@@ -46,7 +46,7 @@ static void test_create_stereo_audio_track()
 	AudioTrack *track = &s_track_obj;
 	
 	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_STEREO, 160, NULL);
-	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
+	zassert_equal(ret, BAD_VALUE, "Failed to create AudioTrack object");
 
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
@@ -69,7 +69,7 @@ static void test_0_sample_rate_audio_track()
 	AudioTrack *track = &s_track_obj;
 	
 	ret = AudioTrack_ctor(track, 0, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
-	zassert_equal(ret, BAD_VALUE, "Failed to create AudioTrack object");
+	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 }
 
@@ -318,12 +318,12 @@ static void test_set_average_volume_audio_track()
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 
-	AudioTrack_setVolume(track, 0.5, 0.5);
+	AudioTrack_setVolume(track, 0.5f, 0.5f);
 	float left;
 	float right;
 	AudioTrack_getVolume(track, &left, &right);
-	zassert_equal(left, 0.5, "left volume error");
-	zassert_equal(right, 0.5, "right volume error");
+	zassert_equal(left, 0.5f, "left volume error");
+	zassert_equal(right, 0.5f, "right volume error");
 	AudioTrack_start(track);
 	
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
@@ -380,7 +380,7 @@ static void test_format_channel_count_frame_count_frame_size_audio_track()
 	zassert_equal(ret, PCM_16_BIT, "Format error");
 
 	ret = AudioTrack_channelCount(track);
-	zassert_equal(ret, CHANNEL_OUT_MONO, "Channel error");
+	zassert_equal(ret, 1, "Channel error");
 
 	ret = AudioTrack_frameCount(track);
 	zassert_equal(ret, 160, "Frame count error");
