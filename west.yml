@@ -11,7 +11,7 @@ manifest:
   projects:
     - name: zephyr
       remote: zephyr
-      revision: master
+      revision: 6d326a36d5a9cdabec97081914e558ee3b4738f6
       clone-depth: 1
       path: zephyr
       import:
