@@ -55,7 +55,7 @@ const char *classes[] = {
 static void test_thinker()
 {
 	/* 加载 Thinker 模型，注意传入模型的实际字节数 */
-	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932400);
+	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932416);
 	printk("Model loaded\n");
 
 	int8_t *output;
@@ -105,7 +105,7 @@ static void test_record_and_track_thinker()
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 	zassert_equal(ret, sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT, "Failed to write audio track");
 
-	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932400);
+	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932416);
 	printk("Model loaded\n");
 
 	int8_t *output;
@@ -170,7 +170,7 @@ static void test_thinker_set_model_0()
 static void test_thinker_set_input_size_0()
 {
 	/* 加载 Thinker 模型，注意传入模型的实际字节数 */
-	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932400);
+	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932416);
 	printk("Model loaded\n");
 
 	int8_t *output;
@@ -219,7 +219,7 @@ static void test_record_and_track_thinker_100_times()
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 	zassert_equal(ret, sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT, "Failed to write audio track");
 
-	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932400);
+	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932416);
 	printk("Model loaded\n");
 
 	int8_t *output;
