@@ -55,6 +55,15 @@ void main(void)
 	assert(0 == ret);
 
 	/* 初始化音频组件 */
+	String8 param;
+	String8_ctor_char(&param, "ADC_PDM_GAIN_A_LEFT=6;"
+				  "ADC_PDM_GAIN_D_LEFT=20;"
+				  "ADC_PDM_GAIN_A_RIGHT=6;"
+				  "ADC_PDM_GAIN_D_RIGHT=20");
+	ret = AudioSystem_setParameters(0, &param);
+	String8_dtor(&param);
+	assert(0 == ret);
+
 	AudioRecord *record = &s_record_obj;
 	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 	assert(0 == ret);
