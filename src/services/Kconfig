@@ -37,6 +37,5 @@ DT_COMPAT_LSF_VAD_SERVICE := lsf,vad-service
 config LSF_VAD_SERVICE
 	bool "LSF VAD Service"
 	default $(dt_compat_enabled,$(DT_COMPAT_LSF_VAD_SERVICE))
-	depends on LSF_AUDIO_SERVICE
 
 endmenu
