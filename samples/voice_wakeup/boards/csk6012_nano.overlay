@@ -21,10 +21,6 @@
 	};
 };
 
-&lsf_audio {
-	status = "okay";
-};
-
 &lsf_vad {
 	status = "okay";
 	channel = <VAD_CH_LEFT>;

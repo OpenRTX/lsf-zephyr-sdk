@@ -9,14 +9,9 @@
 
 #include <lsf/services/vad.h>
 
-#include "AudioSystem.h"
-#include "AudioRecord.h"
-
 #include "Driver_PWR.h"
 
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios);
-
-static AudioRecord s_record_obj;
 
 void main(void)
 {
@@ -33,10 +28,6 @@ void main(void)
 	/* 获取唤醒原因 */
 	int32_t cause = HAL_PWR_GetWakeCause(pwr);
 	printk("Wake cause: 0x%x\n", cause);
-
-	/* 初始化音频组件 */
-	AudioRecord *record = &s_record_obj;
-	AudioRecord_ctor(record, 0, 16000, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
 	printk("Going to sleep after 3 seconds...\n");
 	k_sleep(K_SECONDS(3));
