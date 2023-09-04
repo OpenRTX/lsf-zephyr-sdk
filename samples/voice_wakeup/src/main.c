@@ -9,6 +9,8 @@
 
 #include <lsf/services/vad.h>
 
+#include "AudioSystem.h"
+
 #include "Driver_PWR.h"
 
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios);
@@ -28,6 +30,15 @@ void main(void)
 	/* 获取唤醒原因 */
 	int32_t cause = HAL_PWR_GetWakeCause(pwr);
 	printk("Wake cause: 0x%x\n", cause);
+
+	/* 设置麦克风增益 */
+	String8 param;
+	String8_ctor_char(&param, "ADC_PDM_GAIN_A_LEFT=6;"
+				  "ADC_PDM_GAIN_D_LEFT=20;"
+				  "ADC_PDM_GAIN_A_RIGHT=6;"
+				  "ADC_PDM_GAIN_D_RIGHT=20");
+	AudioSystem_setParameters(0, &param);
+	String8_dtor(&param);
 
 	printk("Going to sleep after 3 seconds...\n");
 	k_sleep(K_SECONDS(3));
