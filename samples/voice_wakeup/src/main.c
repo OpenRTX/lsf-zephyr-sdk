@@ -43,10 +43,10 @@ void main(void)
 
 	/* 设置麦克风增益 */
 	String8 param;
-	String8_ctor_char(&param, "ADC_PDM_GAIN_A_LEFT=6;"
-				  "ADC_PDM_GAIN_D_LEFT=20;"
-				  "ADC_PDM_GAIN_A_RIGHT=6;"
-				  "ADC_PDM_GAIN_D_RIGHT=20");
+	String8_ctor_char(&param, "ADC_PDM_GAIN_A_LEFT=0;"
+				  "ADC_PDM_GAIN_D_LEFT=0;"
+				  "ADC_PDM_GAIN_A_RIGHT=0;"
+				  "ADC_PDM_GAIN_D_RIGHT=0");
 	AudioSystem_setParameters(0, &param);
 	String8_dtor(&param);
 
