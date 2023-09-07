@@ -28,8 +28,18 @@ void main(void)
 	gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
 
 	/* 获取唤醒原因 */
-	int32_t cause = HAL_PWR_GetWakeCause(pwr);
-	printk("Wake cause: 0x%x\n", cause);
+	if (IP_PMUCTRL->REG_AON_STATUS_3.bit.IRQ_AON_WAKEUP) {
+		if (IP_PMUCTRL->REG_PMU_CTRL1.bit.IS_VAD_WAKEUP) {
+			printk("Wake up by VAD\n");
+		} else {
+			printk("Wake up by other reason\n");
+		}
+
+		/* 清除唤醒标记位 */
+		IP_PMUCTRL->REG_AON_STATUS_3.bit.IRQ_AON_WAKEUP = 1;
+	} else {
+		printk("Power on\n");
+	}
 
 	/* 设置麦克风增益 */
 	String8 param;
