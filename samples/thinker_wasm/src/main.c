@@ -40,7 +40,7 @@ void main(void)
 	printk("Hello World! %s\n", CONFIG_BOARD);
 
 	/* 加载 Thinker 模型，注意传入模型的实际字节数 */
-	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932400);
+	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932416);
 	printk("Model loaded\n");
 
 	int8_t *output;
