@@ -5,10 +5,28 @@
 
 #include <lsf/lsf.dtsi>
 
+/delete-node/ &storage_partition;
+
 / {
 	chosen {
 		lsf,dsp-firmware = &dsp_firmware;
 		lsf,dsp-wasm-app = &wasm_app;
+	};
+
+	fstab {
+		compatible = "zephyr,fstab";
+		lfs1: lfs1 {
+			compatible = "zephyr,fstab,littlefs";
+			mount-point = "/lfs1";
+			partition = <&storage_partition>;
+			// automount;
+			// no-format;
+			read-size = <16>;
+			prog-size = <16>;
+			cache-size = <64>;
+			lookahead-size = <32>;
+			block-cycles = <512>;
+		};
 	};
 };
 
@@ -27,6 +45,11 @@
 		thinker_model: partition@300000 {
 			label = "thinker_model";
 			reg = <0x300000 DT_SIZE_M(3)>;
+		};
+
+		storage_partition: partition@600000 {
+			label = "storage";
+			reg = <0x600000 DT_SIZE_M(1)>;
 		};
 	};
 };
