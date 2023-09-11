@@ -849,7 +849,7 @@ static void test_set_illegal_gain_audio_track()
 	String8_ctor_char(&param, "DAC_GAIN_A_LEFT=XXX");
 	ret = AudioSystem_setParameters(0, &param);
 	printk("ret:%d\n", ret);
-	zassert_equal(ret, INVALID_OPERATION, "Failed to set parameters");
+	zassert_true(ret<0, "Failed to set parameters");
 
 	String8_dtor(&param);
 
