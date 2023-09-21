@@ -20,6 +20,7 @@ enum {
 	THINKERSERVICE_PROPERTY_INPUT,
 	THINKERSERVICE_PROPERTY_OUTPUT,
 	THINKERSERVICE_PROPERTY_MODEL,
+	THINKERSERVICE_PROPERTY_OUTPUT_COUNT,
 };
 
 static LsfPropertyConfig thinkerservice_property_defs[] = {
@@ -37,6 +38,11 @@ static LsfPropertyConfig thinkerservice_property_defs[] = {
 		.property_id = THINKERSERVICE_PROPERTY_MODEL,
 		.flag = LSF_PROPERTY_FLAG_SYNC | LSF_PROPERTY_FLAG_SET_ONLY,
 		.type = LSF_PROPERTY_TYPE_PTR,
+	},
+	{
+		.property_id = THINKERSERVICE_PROPERTY_OUTPUT_COUNT,
+		.flag = LSF_PROPERTY_FLAG_SYNC | LSF_PROPERTY_FLAG_GET_ONLY,
+		.type = LSF_PROPERTY_TYPE_UINT32,
 	},
 };
 
@@ -105,6 +111,26 @@ int lsf_thinker_get_output(void **ptr, uint32_t *size)
 	LOG_HEXDUMP_DBG(*ptr, MIN(8, *size), "Output data (first 8 bytes):");
 
 	return 0;
+}
+
+int lsf_thinker_get_output_count(void)
+{
+	LsfVariant *var;
+	uint32_t count;
+	int ret;
+
+	ret = lsf_get(THINKER_SERVICE_ID, THINKERSERVICE_PROPERTY_OUTPUT_COUNT, &var);
+	if (ret < 0) {
+		LOG_ERR("Failed to get output count: %d", ret);
+		return -EIO;
+	}
+
+	count = var->u.uiVal;
+	LsfVariant_unref(var);
+
+	LOG_DBG("Got output count: %d", count);
+
+	return count;
 }
 
 static int lsf_thinker_init(void)
