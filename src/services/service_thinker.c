@@ -14,6 +14,9 @@ LOG_MODULE_REGISTER(lsf_thinker, CONFIG_LSF_LOG_LEVEL);
 #include <lsf/service.h>
 #include <lsf/services/thinker.h>
 
+#include "ic_allocator.h"
+extern IC_Allocator *g_pFreeer;
+
 #define THINKER_SERVICE_ID DT_INST_REG_ADDR(0)
 
 enum {
@@ -103,12 +106,31 @@ int lsf_thinker_get_output(void **ptr, uint32_t *size)
 		return -EIO;
 	}
 
-	*ptr = var->u.pointer.pAddr;
-	*size = var->u.pointer.size;
-	LsfVariant_unref(var);
+	LsfVariant output;
+	LsfVariant_init(&output);
+	output.variant_type = type_pointer;
 
-	LOG_DBG("Got output: ptr: %p, size: %u", *ptr, *size);
-	LOG_HEXDUMP_DBG(*ptr, MIN(8, *size), "Output data (first 8 bytes):");
+	size_t output_size = LsfVariant_getMarshalSize(&output);
+
+	size_t buf_size = var->u.pointer.size;
+	size_t item_size;
+	for (int i = 0; buf_size > 0; i++) {
+		LsfVariantClass_unmarshal(&output,
+					  (uint8_t *)var->u.pointer.pAddr + i * output_size,
+					  output_size, &item_size);
+		buf_size -= item_size;
+
+		ptr[i] = output.u.pointer.pAddr;
+		size[i] = output.u.pointer.size;
+
+		LOG_DBG("Got output[%d]: ptr: %p, size: %u", i, ptr[i], size[i]);
+		LOG_HEXDUMP_DBG(ptr[i], MIN(8, *size), "Output data (first 8 bytes):");
+	}
+
+	IC_Sharemem_detach(var->u.pointer.pAddr, var->u.pointer.size);
+	IC_Allocator_free(g_pFreeer, var->u.pointer.pAddr);
+
+	LsfVariant_unref(var);
 
 	return 0;
 }
