@@ -56,12 +56,11 @@ int lsf_thinker_set_model(const void *ptr, uint32_t size)
 	ret = lsf_set(THINKER_SERVICE_ID, THINKERSERVICE_PROPERTY_MODEL, &var);
 	if (ret != 0) {
 		LOG_ERR("Failed to set model: %d", ret);
-		return -EIO;
+		ret = -EIO;
 	}
 
 	LsfVariant_clear(&var);
-
-	return 0;
+	return ret;
 }
 
 int lsf_thinker_set_input(const void *ptr, uint32_t size)
@@ -80,12 +79,11 @@ int lsf_thinker_set_input(const void *ptr, uint32_t size)
 	ret = lsf_set(THINKER_SERVICE_ID, THINKERSERVICE_PROPERTY_INPUT, &var);
 	if (ret != 0) {
 		LOG_ERR("Failed to set input: %d", ret);
-		return -EIO;
+		ret = -EIO;
 	}
 
 	LsfVariant_clear(&var);
-
-	return 0;
+	return ret;
 }
 
 int lsf_thinker_get_output(void **ptr, uint32_t *size)
