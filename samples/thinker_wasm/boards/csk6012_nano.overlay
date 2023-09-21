@@ -28,6 +28,11 @@
 			label = "thinker_model";
 			reg = <0x300000 DT_SIZE_M(3)>;
 		};
+
+		thinker_test_data: partition@600000 {
+			label = "thinker_test_data";
+			reg = <0x600000 DT_SIZE_M(1)>;
+		};
 	};
 };
 
