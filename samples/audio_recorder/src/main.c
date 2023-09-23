@@ -91,7 +91,7 @@ void main(void)
 
 		AudioRecord_start(record);
 		size = AudioRecord_read(record, recording,
-					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+					sizeof(int16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 		AudioRecord_stop(record);
 		assert(size > 0);
 
