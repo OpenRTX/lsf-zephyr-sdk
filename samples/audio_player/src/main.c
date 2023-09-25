@@ -36,6 +36,7 @@ static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios);
 static AudioTrack s_track_obj;
 
 static struct k_sem s_sem_start;
+static volatile bool s_busy;
 
 static void kscan_callback(const struct device *dev, uint32_t row, uint32_t column, bool pressed)
 {
@@ -47,7 +48,9 @@ static void kscan_callback(const struct device *dev, uint32_t row, uint32_t colu
 
 	switch (row) {
 	case KEY_SW2:
-		k_sem_give(&s_sem_start);
+		if (!s_busy) {
+			k_sem_give(&s_sem_start);
+		}
 		break;
 	case KEY_K1:
 		AudioTrack_stop(&s_track_obj);
@@ -97,12 +100,13 @@ void main(void)
 	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, 0);
 	assert(0 == ret);
 
-	printk("SW2=PLAY, K1=STOP, K2=MUTE/UNMUTE, K3=VOL-, K4=VOL+\n");
-	printk("Press SW2 to play\n");
-
 	while (1) {
+		printk("SW2=PLAY, K1=STOP, K2=MUTE/UNMUTE, K3=VOL-, K4=VOL+\n");
+		printk("Press SW2 to play\n");
+
 		/* 循环等待按键按下 */
 		k_sem_take(&s_sem_start, K_FOREVER);
+		s_busy = true;
 
 		gpio_pin_set_dt(&led, 1);
 
@@ -114,5 +118,7 @@ void main(void)
 		AudioTrack_stop(track);
 
 		gpio_pin_set_dt(&led, 0);
+
+		s_busy = false;
 	}
 }

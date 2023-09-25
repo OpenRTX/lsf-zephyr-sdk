@@ -28,6 +28,7 @@ static AudioRecord s_record_obj;
 static AudioTrack s_track_obj;
 
 static struct k_sem s_sem_record;
+static volatile bool s_busy;
 
 __attribute__((section(".psram_section"))) static uint8_t
 	recording[sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT];
@@ -36,7 +37,9 @@ static void button_pressed(const struct device *dev, struct gpio_callback *cb, u
 {
 	printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
 
-	k_sem_give(&s_sem_record);
+	if (!s_busy) {
+		k_sem_give(&s_sem_record);
+	}
 }
 
 void main(void)
@@ -78,12 +81,13 @@ void main(void)
 	gpio_init_callback(&btn_cb_data, button_pressed, BIT(btn.pin));
 	gpio_add_callback(btn.port, &btn_cb_data);
 
-	printk("Press the button\n");
-
 	ssize_t size;
 	while (1) {
+		printk("Press the button\n");
+
 		/* 循环等待按键按下 */
 		k_sem_take(&s_sem_record, K_FOREVER);
+		s_busy = true;
 
 		gpio_pin_set_dt(&led, 1);
 
@@ -103,5 +107,7 @@ void main(void)
 		size = AudioTrack_write(track, recording, size);
 		assert(size > 0);
 		AudioTrack_stop(track);
+
+		s_busy = false;
 	}
 }
