@@ -1,0 +1,5 @@
+sample:
+  name: audio_recorder_multichannel
+tests:
+  sample.audio_recorder_multichannel:
+    tags: audio
