@@ -22,6 +22,11 @@
 			label = "test_audio";
 			reg = <0x200000 453350>;
 		};
+
+		test_aac_audio: partition@300000 {
+			label = "test_aac_audio";
+			reg = <0x300000 102276>;
+		};
 	};
 };
 
