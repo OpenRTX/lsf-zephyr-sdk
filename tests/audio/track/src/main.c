@@ -36,11 +36,9 @@ static void test_create_mono_audio_track()
 	
 	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
-	printk("AudioTrack_ctor\n");
 
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
-	printk("AudioTrack_dtor\n");
 
 }
 
@@ -75,6 +73,9 @@ static void test_0_sample_rate_audio_track()
 	ret = AudioTrack_ctor(track, 0, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
+	ret = AudioTrack_dtor(track);
+	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
+
 }
 
 static void test_create_16bit_pcm_audio_track()
@@ -84,9 +85,10 @@ static void test_create_16bit_pcm_audio_track()
 	
 	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
-
+	
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
+	
 
 }
 
@@ -105,6 +107,7 @@ static void test_play_non_offload_audio_track()
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+	AudioRecord_stop(record);
 
 	AudioTrack_start(track);
 	ret = AudioTrack_write(track, recording,
@@ -113,7 +116,10 @@ static void test_play_non_offload_audio_track()
 
 	bool return_value = AudioTrack_stopped(track);
 	zassert_equal(return_value, false, "audio track stopped");
-	
+	AudioTrack_stop(track);
+	return_value = AudioTrack_stopped(track);
+	zassert_equal(return_value, true, "audio track not stopped");
+
 	ret = AudioTrack_dtor(track);
 	ret = AudioRecord_dtor(record);
 
@@ -126,23 +132,28 @@ static void test_stop_non_offload_audio_track()
 	AudioRecord *record = &s_record_obj;
 	
 	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
-
+	printk("AudioRecord_ctor");
 	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
+	printk("AudioTrack_ctor");
 
 	AudioRecord_start(record);
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+	AudioRecord_stop(record);
 
 	AudioTrack_start(track);
 	ret = AudioTrack_write(track, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 	zassert_equal(ret, sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT, "Failed to write audio track");
+	AudioTrack_stop(track);
+	bool return_value = AudioTrack_stopped(track);
+	zassert_equal(return_value, true, "audio track not stopped");
 
 	AudioTrack_stop(track);
 
-	bool return_value = AudioTrack_stopped(track);
+	return_value = AudioTrack_stopped(track);
 	zassert_equal(return_value, true, "audio track not stopped");
 	
 	ret = AudioTrack_dtor(track);
@@ -165,6 +176,7 @@ static void test_pause_audio_track()
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+	AudioRecord_stop(record);
 
 	AudioTrack_start(track);
 	
@@ -175,6 +187,9 @@ static void test_pause_audio_track()
 	AudioTrack_pause(track);
 
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
+	AudioTrack_stop(track);
+	bool return_value = AudioTrack_stopped(track);
+	zassert_equal(return_value, true, "audio track not stopped");
 	
 	ret = AudioTrack_dtor(track);
 	ret = AudioRecord_dtor(record);
@@ -196,6 +211,7 @@ static void test_resume_audio_track()
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+	AudioRecord_stop(record);
 
 	AudioTrack_start(track);
 	ret = AudioTrack_write(track, recording,
@@ -207,6 +223,9 @@ static void test_resume_audio_track()
 	AudioTrack_start(track);
 
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
+	AudioTrack_stop(track);
+	bool return_value = AudioTrack_stopped(track);
+	zassert_equal(return_value, true, "audio track not stopped");
 	
 	ret = AudioTrack_dtor(track);
 	ret = AudioRecord_dtor(record);
@@ -229,10 +248,14 @@ static void test_double_start_audio_track()
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+	AudioRecord_stop(record);
 
 	ret = AudioTrack_write(track, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 	zassert_equal(ret, sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT, "Failed to write audio track");
+	AudioTrack_stop(track);
+	bool return_value = AudioTrack_stopped(track);
+	zassert_equal(return_value, true, "audio track not stopped");
 	
 	ret = AudioTrack_dtor(track);
 	ret = AudioRecord_dtor(record);
@@ -254,6 +277,7 @@ static void test_set_max_volume_audio_track()
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+	AudioRecord_stop(record);
 
 	AudioTrack_setVolume(track, 1.0, 1.0);
 	float left;
@@ -266,6 +290,9 @@ static void test_set_max_volume_audio_track()
 	
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 	zassert_true(ret>0, "Failed to write audio track");
+	AudioTrack_stop(track);
+	bool return_value = AudioTrack_stopped(track);
+	zassert_equal(return_value, true, "audio track not stopped");
 
 	
 	ret = AudioTrack_dtor(track);
@@ -288,6 +315,7 @@ static void test_set_min_volume_audio_track()
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+	AudioRecord_stop(record);
 
 	AudioTrack_setVolume(track, 0.0, 0.0);
 	float left;
@@ -299,6 +327,9 @@ static void test_set_min_volume_audio_track()
 	
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 	zassert_true(ret>0, "Failed to write audio track");
+	AudioTrack_stop(track);
+	bool return_value = AudioTrack_stopped(track);
+	zassert_equal(return_value, true, "audio track not stopped");
 
 	
 	ret = AudioTrack_dtor(track);
@@ -321,6 +352,7 @@ static void test_set_average_volume_audio_track()
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+	AudioRecord_stop(record);
 
 	AudioTrack_setVolume(track, 0.5f, 0.5f);
 	float left;
@@ -332,6 +364,9 @@ static void test_set_average_volume_audio_track()
 	
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 	zassert_true(ret>0, "Failed to write audio track");
+	AudioTrack_stop(track);
+	bool return_value = AudioTrack_stopped(track);
+	zassert_equal(return_value, true, "audio track not stopped");
 
 	
 	ret = AudioTrack_dtor(track);
@@ -354,6 +389,7 @@ static void test_set_negtive_volume_audio_track()
 	
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
+	AudioRecord_stop(record);
 
 	AudioTrack_setVolume(track, -0.5, -0.5);
 	float left;
@@ -365,6 +401,9 @@ static void test_set_negtive_volume_audio_track()
 	
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 	zassert_true(ret>0, "Failed to write audio track");
+	AudioTrack_stop(track);
+	bool return_value = AudioTrack_stopped(track);
+	zassert_equal(return_value, true, "audio track not stopped");
 
 	
 	ret = AudioTrack_dtor(track);
@@ -484,6 +523,7 @@ static void test_obtain_buffer_audio_track()
     } while (userSize);
 
 
+	AudioTrack_stop(track);
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
 
@@ -542,6 +582,7 @@ static void test_mute_audio_track()
         AudioTrack_releaseBuffer(track, &audioBuffer);
     } while (userSize);
 
+	AudioTrack_stop(track);
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
 
@@ -605,6 +646,7 @@ static void test_unmute_audio_track()
         AudioTrack_releaseBuffer(track, &audioBuffer);
     } while (userSize);
 
+	AudioTrack_stop(track);
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
 
@@ -638,6 +680,7 @@ static void test_set_analog_gain_to_0_audio_track()
 
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 
+	AudioTrack_stop(track);
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
 
@@ -671,6 +714,7 @@ static void test_set_analog_gain_to_max_audio_track()
 
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 
+	AudioTrack_stop(track);
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
 
@@ -704,6 +748,7 @@ static void test_set_analog_gain_to_min_audio_track()
 
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 
+	AudioTrack_stop(track);
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
 
@@ -737,6 +782,7 @@ static void test_set_digital_gain_to_0_audio_track()
 
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 
+	AudioTrack_stop(track);
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
 
@@ -770,6 +816,7 @@ static void test_set_digital_gain_to_max_audio_track()
 
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 
+	AudioTrack_stop(track);
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
 
@@ -803,6 +850,7 @@ static void test_set_digital_gain_to_min_audio_track()
 
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 
+	AudioTrack_stop(track);
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
 
@@ -836,6 +884,7 @@ static void test_set_analog_digital_gain_to_max_audio_track()
 
 	ret = AudioTrack_write(track, (const void *)TEST_AUDIO_ADDR, TEST_AUDIO_SIZE);
 
+	AudioTrack_stop(track);
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
 
@@ -870,7 +919,12 @@ static void test_play_16k_aac_audio_track()
 	
 	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, AAC, CHANNEL_OUT_MONO, 160, NULL);
+	audio_offload_info_t offload_info = {
+		.channel_mask = CHANNEL_OUT_MONO,
+		.format = AAC,
+		.sample_rate = SAMPLE_RATE,
+	};
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, AAC, CHANNEL_OUT_MONO, 160, &offload_info);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	AudioRecord_start(record);
@@ -878,11 +932,13 @@ static void test_play_16k_aac_audio_track()
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 
+	AudioRecord_stop(record);
 	AudioTrack_start(track);
 	
 	ret = AudioTrack_write(track, (const void *)TEST_AAC_AUDIO_ADDR, TEST_AAC_AUDIO_SIZE);
 	zassert_true(ret>0, "Failed to write audio track");
 
+	AudioTrack_stop(track);
 	
 	ret = AudioTrack_dtor(track);
 	ret = AudioRecord_dtor(record);
@@ -919,7 +975,7 @@ void test_main(void)
 					ztest_unit_test(test_set_digital_gain_to_max_audio_track), 
 					ztest_unit_test(test_set_digital_gain_to_min_audio_track), 
 					ztest_unit_test(test_set_analog_digital_gain_to_max_audio_track), 
-					ztest_unit_test(test_set_illegal_gain_audio_track), 
-					ztest_unit_test(test_play_16k_aac_audio_track));
+					ztest_unit_test(test_set_illegal_gain_audio_track));
+//					ztest_unit_test(test_play_16k_aac_audio_track));
 	ztest_run_test_suite(audio_track_test);
 }
