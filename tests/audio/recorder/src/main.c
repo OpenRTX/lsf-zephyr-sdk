@@ -76,6 +76,21 @@ static void test_channel_stereo_audio_recorder()
 
 }
 
+static void test_create_too_many_audio_recorder()
+{
+	int ret;
+	AudioRecord *record = &s_record_obj;
+
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_RIGHT, 160, NULL);
+	zassert_equal(ret, NO_ERROR, "Failed to create AudioRecord object");
+
+	AudioRecord record2;
+	ret = AudioRecord_ctor(&record2, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_RIGHT, 160, NULL);
+	zassert_not_equal(ret, NO_ERROR, "Should fail on double create AudioRecord object");
+
+	AudioRecord_dtor(record);
+}
+
 static void test_0_sample_rate_audio_recorder()
 {
 	int ret;
@@ -477,6 +492,7 @@ void test_main(void)
 					ztest_unit_test(test_channel_left_audio_recorder),
 					ztest_unit_test(test_channel_right_audio_recorder),
 					ztest_unit_test(test_channel_stereo_audio_recorder),
+					ztest_unit_test(test_create_too_many_audio_recorder),
 					ztest_unit_test(test_0_sample_rate_audio_recorder),
 					ztest_unit_test(test_negative_frame_count_audio_recorder),
 					ztest_unit_test(test_audio_recorder),
