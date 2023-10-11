@@ -100,11 +100,14 @@ static void test_record_and_track_thinker()
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 
+	AudioRecord_stop(record);
+
 	AudioTrack_start(track);
 	ret = AudioTrack_write(track, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 	zassert_equal(ret, sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT, "Failed to write audio track");
 
+	AudioTrack_stop(track);
 	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932416);
 	printk("Model loaded\n");
 
@@ -214,11 +217,13 @@ static void test_record_and_track_thinker_100_times()
 	ret = AudioRecord_read(record, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 
+	AudioRecord_stop(record);
 	AudioTrack_start(track);
 	ret = AudioTrack_write(track, recording,
 					sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT);
 	zassert_equal(ret, sizeof(uint16_t) * RECORD_SAMPLE_CNT * CHANNEL_CNT, "Failed to write audio track");
 
+	AudioTrack_stop(track);
 	lsf_thinker_set_model((const void *)THINKER_MODEL_ADDR, 2932416);
 	printk("Model loaded\n");
 
