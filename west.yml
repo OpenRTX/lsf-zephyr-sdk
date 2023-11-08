@@ -51,3 +51,9 @@ manifest:
       revision: v1.1.0
       path: modules/lib/af
       repo-path: modules/af
+    - name: csk6_cm33
+      url: https://cloud.listenai.com/listenai/driver/csk6_cm33
+      revision: 4db1a6483eebb456f47d952c579ee5ac7bb23f80
+      path: modules/hal/listenai/csk6_cm33
+      groups:
+        - hal
