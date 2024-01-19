@@ -1,0 +1,5 @@
+sample:
+  name: audio_player
+tests:
+  sample.audio_player:
+    tags: audio
