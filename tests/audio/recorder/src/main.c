@@ -43,10 +43,10 @@ static void test_channel_left_audio_recorder()
 	
 	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioRecord object");
-	printk("AudioRecord_ctor\n");
+	
 	ret = AudioRecord_dtor(record);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioRecord object");
-	printk("AudioRecord_dtor\n");
+	
 
 }
 

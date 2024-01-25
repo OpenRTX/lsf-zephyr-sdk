@@ -147,10 +147,8 @@ static void test_stop_non_offload_audio_track()
 	AudioRecord *record = &s_record_obj;
 	
 	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
-	printk("AudioRecord_ctor");
 	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, NULL);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
-	printk("AudioTrack_ctor");
 
 	AudioRecord_start(record);
 	
@@ -942,6 +940,19 @@ static void test_play_16k_aac_audio_track()
 	ret = AudioTrack_ctor(track, SAMPLE_RATE, AAC, CHANNEL_OUT_MONO, 160, &offload_info);
 	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
+	String8 param;
+	String8_ctor_char(&param, "DAC_GAIN_A_LEFT=0;DAC_GAIN_A_RIGHT=0;DAC_GAIN_D_LEFT=0;DAC_GAIN_D_RIGHT=0");
+	ret = AudioSystem_setParameters(0, &param);
+	zassert_equal(ret, NO_ERROR, "Failed to set parameters");
+
+	String8_dtor(&param);
+
+	String8_ctor_char(&param, "DAC_GAIN_A_LEFT;DAC_GAIN_A_RIGHT;DAC_GAIN_D_LEFT;DAC_GAIN_D_RIGHT");
+	String8 ret_param;
+	ret_param = AudioSystem_getParameters(0, &param);
+	printk("get param %s\n", ret_param.mString);
+	zassert_equal(strcmp(ret_param.mString, "DAC_GAIN_A_LEFT=0;DAC_GAIN_A_RIGHT=0;DAC_GAIN_D_LEFT=0;DAC_GAIN_D_RIGHT=0"), 0, "Failed to get parameters");
+
 	AudioRecord_start(record);
 	
 	ret = AudioRecord_read(record, recording,
@@ -991,7 +1002,7 @@ void test_main(void)
 					ztest_unit_test(test_set_digital_gain_to_max_audio_track), 
 					ztest_unit_test(test_set_digital_gain_to_min_audio_track), 
 					ztest_unit_test(test_set_analog_digital_gain_to_max_audio_track), 
-					ztest_unit_test(test_set_illegal_gain_audio_track));
-//					ztest_unit_test(test_play_16k_aac_audio_track));
+					ztest_unit_test(test_set_illegal_gain_audio_track),
+					ztest_unit_test(test_play_16k_aac_audio_track));
 	ztest_run_test_suite(audio_track_test);
 }
