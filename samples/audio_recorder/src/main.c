@@ -68,11 +68,11 @@ void main(void)
 	assert(0 == ret);
 
 	AudioRecord *record = &s_record_obj;
-	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 160, NULL);
+	ret = AudioRecord_ctor(record, 0, SAMPLE_RATE, PCM_16_BIT, CHANNEL_IN_LEFT, 0, NULL);
 	assert(0 == ret);
 
 	AudioTrack *track = &s_track_obj;
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, 0);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 0, NULL);
 	assert(0 == ret);
 
 	ret = gpio_pin_interrupt_configure_dt(&btn, GPIO_INT_EDGE_TO_ACTIVE);

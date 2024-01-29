@@ -97,7 +97,7 @@ void main(void)
 
 	/* 初始化音频组件 */
 	AudioTrack *track = &s_track_obj;
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 160, 0);
+	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_MONO, 0, NULL);
 	assert(0 == ret);
 
 	while (1) {

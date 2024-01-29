@@ -51,7 +51,7 @@ extern void play_thread(void *p1, void *p2, void *p3)
 	}
 }
 
-#define PLAY_THREAD_STACK_SIZE (8 * 1024)
+#define PLAY_THREAD_STACK_SIZE (16 * 1024)
 #define PLAY_THREAD_PRIORITY   (5)
 
 K_THREAD_DEFINE(play_thread_tid, PLAY_THREAD_STACK_SIZE, play_thread, NULL, NULL, NULL,

@@ -74,11 +74,11 @@ void main(void)
 	String8_dtor(&param);
 	assert(0 == ret);
 
-	ret = AudioTrack_ctor(&g_track, 16000, PCM_16_BIT, CHANNEL_OUT_MONO, 160, 0);
+	ret = AudioTrack_ctor(&g_track, 16000, PCM_16_BIT, CHANNEL_OUT_MONO, 0, NULL);
 	assert(ret == 0);
 
 	ret = AudioRecord_ctor(&g_record, 0, 16000, PCM_16_BIT,
-			       CHANNEL_IN_STEREO | CHANNEL_IN_AUX | CHANNEL_IN_ECHO, 160, NULL);
+			       CHANNEL_IN_STEREO | CHANNEL_IN_AUX | CHANNEL_IN_ECHO, 0, NULL);
 	assert(ret == 0);
 
 	kscan_config(kscan, kscan_callback);
