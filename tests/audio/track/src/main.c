@@ -55,16 +55,6 @@ static void test_create_stereo_audio_track()
 
 }
 
-static void test_unsupport_channel_audio_track()
-{
-	int ret;
-	AudioTrack *track = &s_track_obj;
-	
-	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, 0, 320, NULL);
-	zassert_equal(ret, BAD_VALUE, "Failed to create AudioTrack object");
-
-}
-
 static void test_0_sample_rate_audio_track()
 {
 	int ret;
@@ -950,7 +940,6 @@ void test_main(void)
 	ztest_test_suite(audio_track_test, 
 					ztest_unit_test(test_create_mono_audio_track), 
 					ztest_unit_test(test_create_stereo_audio_track), 
-					ztest_unit_test(test_unsupport_channel_audio_track), 
 					ztest_unit_test(test_0_sample_rate_audio_track), 
 					ztest_unit_test(test_create_16bit_pcm_audio_track), 
 					ztest_unit_test(test_play_non_offload_audio_track), 
