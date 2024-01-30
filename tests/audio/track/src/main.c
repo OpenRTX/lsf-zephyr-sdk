@@ -48,7 +48,7 @@ static void test_create_stereo_audio_track()
 	AudioTrack *track = &s_track_obj;
 	
 	ret = AudioTrack_ctor(track, SAMPLE_RATE, PCM_16_BIT, CHANNEL_OUT_STEREO, 320, NULL);
-	zassert_equal(ret, BAD_VALUE, "Failed to create AudioTrack object");
+	zassert_equal(ret, NO_ERROR, "Failed to create AudioTrack object");
 
 	ret = AudioTrack_dtor(track);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioTrack object");
