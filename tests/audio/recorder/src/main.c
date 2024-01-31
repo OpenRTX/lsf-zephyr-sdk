@@ -145,7 +145,7 @@ static void test_read_0_audio_recorder(void)
 
 	ret = AudioRecord_read(record, recording_l,
 			       0);
-	zassert_equal(ret, 160*sizeof(int16_t), "Failed to read AudioRecord");
+	zassert_equal(ret, 0, "Failed to read AudioRecord");
 
 	ret = AudioRecord_dtor(record);
 	zassert_equal(ret, NO_ERROR, "Failed to release AudioRecord object");
