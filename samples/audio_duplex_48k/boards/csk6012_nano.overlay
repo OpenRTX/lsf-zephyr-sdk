@@ -1,0 +1,49 @@
+/*
+ * Copyright(c) 2023 LISTENAI
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <lsf/lsf.dtsi>
+
+/ {
+	chosen {
+		lsf,dsp-firmware = &dsp_firmware;
+	};
+
+	aliases {
+		analogkey = &keysense;
+	};
+};
+
+&flash0 {
+	partitions {
+		dsp_firmware: partition@100000 {
+			label = "dsp_firmware";
+			reg = <0x100000 DT_SIZE_M(1)>;
+		};
+	};
+};
+
+&pinctrl {
+	keysense_default: keysense_default {
+		pinctrls = <AON_KEY_GPIOB_05>;
+	};
+};
+
+&keysense {
+	status = "okay";
+	pinctrl-0 = <&keysense_default>;
+	pinctrl-names = "default";
+	io-channels = <&adc0 6>;
+	analogkey-trigger = <
+		1058 /* K4 */
+		1211 /* K3 */
+		1357 /* K2 */
+		1650 /* K1 */
+		3250 /* SW2 */
+	>;
+};
+
+&lsf_audio {
+	status = "okay";
+};

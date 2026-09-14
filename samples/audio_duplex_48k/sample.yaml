@@ -1,0 +1,5 @@
+sample:
+  name: audio_duplex_48k
+tests:
+  sample.audio_duplex_48k:
+    tags: audio
